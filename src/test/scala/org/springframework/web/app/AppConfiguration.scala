@@ -8,11 +8,14 @@ import org.springframework.web.scala.{Action, Get, MvcRequest}
 class AppConfiguration {
 
   @Bean
-  def hello():Action[MvcRequest,String] = {
-    val requestToString: MvcRequest => String = r => r.params.getOrElse("nome","world")
-    val formatMyString : String => String = in => in.capitalize
-    val welcome : String => String = in => s"Welcome $in"
-    new Action[MvcRequest,String](Get("/hello"),requestToString andThen formatMyString andThen welcome )
+  def hello() = {
+    val requestToString: MvcRequest => String = r => r.params.getOrElse("name","world")
+    val formatMyString : String => String = rawString => rawString.capitalize
+    val welcome : String => String = name => s"Welcome $name"
+
+    Action(Get( "/hello") ){
+       requestToString andThen formatMyString andThen welcome
+     }
   }
 
 }

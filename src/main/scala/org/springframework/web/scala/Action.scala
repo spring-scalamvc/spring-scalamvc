@@ -52,5 +52,10 @@ case class Action[A,B](val req:RequestMapping[A],  val fn:A => B) //TODO  swagge
 
 object Action {
 
+  def apply[A,B](req:RequestMapping[A])(fn:A => B): Action[A,B] = {
+     new Action(req,fn)
+  }
+
+
 }
 
