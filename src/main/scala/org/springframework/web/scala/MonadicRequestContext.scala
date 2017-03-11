@@ -2,9 +2,6 @@ package org.springframework.web.scala
 
 import javax.servlet.http.HttpServletRequest
 
-/**
-  * Created by sam on 10/03/17.
-  */
 trait MonadicRequestContext[T] {
 
   def getOriginalRequest():HttpServletRequest

@@ -41,7 +41,7 @@ class Get[A](queryPath:String,fn: HttpServletRequest => A) extends RequestMappin
 
 object Get{
 
-  def apply(path: String): Get[MvcRequest] = new Get(path,r => new MvcRequest(r.getParameterMap.toMap.map( k => (k._1.toString,k._2.asInstanceOf[Array[String]].head))))
+  def apply(path: String): Get[MvcRequest] = new Get(path,r => new MvcRequest(r))
 
   def apply[A](queryPath: String, fn: HttpServletRequest => A): Get[A] = new Get(queryPath, fn)
 }

@@ -12,9 +12,7 @@ import org.springframework.mock.web.{MockHttpServletRequest, MockHttpServletResp
 import org.springframework.web.scala._
 import org.springframework.web.servlet.{DispatcherServlet, ModelAndView}
 
-/**
-  * Created by sam on 10/03/17.
-  */
+
 
 class HandlerTest extends FlatSpec with Matchers  with BeforeAndAfterAll{
 
