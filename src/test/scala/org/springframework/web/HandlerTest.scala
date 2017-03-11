@@ -13,11 +13,17 @@ import org.springframework.web.scala._
 import org.springframework.web.servlet.{DispatcherServlet, ModelAndView}
 
 
+case class Person(name:String)
+
 
 class HandlerTest extends FlatSpec with Matchers  with BeforeAndAfterAll{
 
   val requestToString: MvcRequest => String = r => r.params.getOrElse("name","world")
   val requestToPerson: MvcRequest => String = r => r.attributes.getOrElse("company","ACME")
+  val printPerson: Person => Person = p => {
+    println(p.name)
+    new Person(p.name.capitalize)
+  }
 
 
 
@@ -27,12 +33,16 @@ class HandlerTest extends FlatSpec with Matchers  with BeforeAndAfterAll{
       requestToString
   }
 
-  val personAction =  Action(Get( helloUri) ){
+  val personAction =  Action(Get( personUri) ){
     requestToPerson
   }
 
+  val newPersonAction = Action(Post(personUri)){
+    printPerson
+  }
 
-  val mapping:ActionHandlerMapping = new ActionHandlerMapping(Map(helloUri -> helloAction , personUri -> helloAction))
+
+  val mapping:ActionHandlerMapping = new ActionHandlerMapping(Map(helloUri -> helloAction , personUri -> personAction))
 
   val adapter = new FunctorHandlerActionAdapter
 

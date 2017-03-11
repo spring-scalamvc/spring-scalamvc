@@ -2,6 +2,9 @@ package org.springframework.web.scala
 
 import javax.servlet.http.HttpServletRequest
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.scala.DefaultScalaModule
+
 
 
 
@@ -45,7 +48,40 @@ object Get{
   def apply[A](queryPath: String, fn: HttpServletRequest => A): Get[A] = new Get(queryPath, fn)
 }
 
+
+class Post[A](queryPath:String,fn: HttpServletRequest => A) extends RequestMapping[A] {
+
+
+  override def method: String = "POST"
+
+
+  override def path: String = queryPath
+
+
+  override def defaultConverter(): (HttpServletRequest) => MonadicRequestContext[A] =
+    r =>
+      new WrappedServletRequestContext[A](fn(r),r)
+
+
+}
+
+
+
+object Post {
+
+  val mapper = new  ObjectMapper()
+  mapper.registerModule(DefaultScalaModule)
+
+/*  def apply[A](path:String):Post[A] = new Post[A](path, r => mapper.readValue(r.getReader, classOf[A]))
+  def apply[A](path:String,customMapper:ObjectMapper):Post[A] = new Post[A](path, r => customMapper.readValue(r.getReader, classOf[A]))*/
+  def apply[A](path:String,fn: HttpServletRequest => A):Post[A] = new Post[A](path,fn)
+}
+
+
 case class Action[A,B](val req:RequestMapping[A])( val fn:A => B) //TODO  swagger
+
+
+
 
 
 
