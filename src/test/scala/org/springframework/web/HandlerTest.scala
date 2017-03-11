@@ -8,9 +8,9 @@ import org.junit.runner.RunWith
 
 import collection.mutable.Stack
 import org.scalatest._
-import org.springframework.mock.web.MockHttpServletRequest
+import org.springframework.mock.web.{MockHttpServletRequest, MockHttpServletResponse}
 import org.springframework.web.scala._
-import org.springframework.web.servlet.DispatcherServlet
+import org.springframework.web.servlet.{DispatcherServlet, ModelAndView}
 
 /**
   * Created by sam on 10/03/17.
@@ -26,17 +26,14 @@ class HandlerTest extends FlatSpec with Matchers  with BeforeAndAfterAll{
 
   val mapping:ActionHandlerMapping = new ActionHandlerMapping(Map(uri -> action))
 
+  val adapter = new FunctorHandlerActionAdapter
+
 
   "A ActionHandlerMapping" should "match correct handlers" in {
 
     val mockRequest = new MockHttpServletRequest("GET",uri)
     val handrer = mapping.getHandlerInternal(mockRequest)
 
-    val stack = new Stack[Int]
-    stack.push(1)
-    stack.push(2)
-    stack.pop() should be (2)
-    stack.pop() should be (1)
   }
 
   it should "throw RuntimeException if no mapping is found" in {
@@ -46,6 +43,19 @@ class HandlerTest extends FlatSpec with Matchers  with BeforeAndAfterAll{
       val handrer = mapping.getHandlerInternal(mockRequest)
     }
   }
+
+  "A FunctorHandlerActionAdapter" should "execute actions" in {
+
+    val mockRequest = new MockHttpServletRequest("GET",uri)
+    val mockResponse = new MockHttpServletResponse
+
+    val modelAndView: ModelAndView = adapter.handle(mockRequest,mockResponse,action)
+
+    modelAndView.getViewName should be ("jsonTemplate")
+
+  }
+
+
 
 
 }
