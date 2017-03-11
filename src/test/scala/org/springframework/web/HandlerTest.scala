@@ -17,19 +17,29 @@ import org.springframework.web.servlet.{DispatcherServlet, ModelAndView}
 class HandlerTest extends FlatSpec with Matchers  with BeforeAndAfterAll{
 
   val requestToString: MvcRequest => String = r => r.params.getOrElse("name","world")
-  val uri: String = "/hello"
-  val action =  Action(Get( uri) ){
+  val requestToPerson: MvcRequest => String = r => r.attributes.getOrElse("company","ACME")
+
+
+
+  val helloUri: String = "/hello"
+  val personUri: String = "/person/{company}/{id}"
+  val helloAction =  Action(Get( helloUri) ){
       requestToString
   }
 
-  val mapping:ActionHandlerMapping = new ActionHandlerMapping(Map(uri -> action))
+  val personAction =  Action(Get( helloUri) ){
+    requestToPerson
+  }
+
+
+  val mapping:ActionHandlerMapping = new ActionHandlerMapping(Map(helloUri -> helloAction , personUri -> helloAction))
 
   val adapter = new FunctorHandlerActionAdapter
 
 
   "A ActionHandlerMapping" should "match correct handlers" in {
 
-    val mockRequest = new MockHttpServletRequest("GET",uri)
+    val mockRequest = new MockHttpServletRequest("GET",helloUri)
     val handrer = mapping.getHandlerInternal(mockRequest)
 
   }
@@ -42,14 +52,26 @@ class HandlerTest extends FlatSpec with Matchers  with BeforeAndAfterAll{
     }
   }
 
+  it should "match  handlers mapped on path parameters" in {
+    val mockRequest = new MockHttpServletRequest("GET","/person/twitter/1")
+
+    val handrer = mapping.getHandlerInternal(mockRequest)
+
+    mockRequest.getAttribute("company") should be ("twitter")
+
+  }
+
   "A FunctorHandlerActionAdapter" should "execute actions" in {
 
-    val mockRequest = new MockHttpServletRequest("GET",uri)
+    val mockRequest = new MockHttpServletRequest("GET",helloUri)
     val mockResponse = new MockHttpServletResponse
 
-    val modelAndView: ModelAndView = adapter.handle(mockRequest,mockResponse,action)
+    val modelAndView: ModelAndView = adapter.handle(mockRequest,mockResponse,helloAction)
 
     modelAndView.getViewName should be ("jsonTemplate")
+
+
+
 
   }
 

@@ -2,8 +2,7 @@ package org.springframework.web.scala
 
 import javax.servlet.http.HttpServletRequest
 
-import scala.collection.JavaConverters._
-import scala.collection.JavaConversions._
+
 
 
 /**
