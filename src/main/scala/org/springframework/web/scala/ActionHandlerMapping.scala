@@ -16,7 +16,7 @@ class ActionHandlerMapping(handlers:Map[String,Action[_,_]]) extends AbstractUrl
     val lookupPath = this.getUrlPathHelper.getLookupPathForRequest(request)
     println("lookupPath: " + lookupPath)
     handlers.get(lookupPath) match {
-      case None => throw new RuntimeException( lookupPath + " not found in mapping ")
+      case None => throw new RuntimeException( lookupPath + " not found in mapping ") // todo 404
       case Some(value) => value
     }
 

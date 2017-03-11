@@ -2,7 +2,6 @@ package org.springframework.web.scala
 
 import javax.servlet.http.{HttpServletRequest, HttpServletResponse}
 
-import org.apache.catalina.connector.Response
 import org.springframework.context.{ApplicationContext, ApplicationContextAware}
 import org.springframework.context.annotation._
 import org.springframework.web.servlet.{HandlerAdapter, View, ViewResolver}

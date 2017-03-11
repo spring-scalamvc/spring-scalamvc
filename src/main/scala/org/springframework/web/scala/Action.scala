@@ -46,15 +46,15 @@ object Get{
   def apply[A](queryPath: String, fn: HttpServletRequest => A): Get[A] = new Get(queryPath, fn)
 }
 
-case class Action[A,B](val req:RequestMapping[A],  val fn:A => B) //TODO  swagger
+case class Action[A,B](val req:RequestMapping[A])( val fn:A => B) //TODO  swagger
 
 
 
 object Action {
 
-  def apply[A,B](req:RequestMapping[A])(fn:A => B): Action[A,B] = {
+  /*def apply[A,B](req:RequestMapping[A])(fn:A => B): Action[A,B] = {
      new Action(req,fn)
-  }
+  }*/
 
 
 }
