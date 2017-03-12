@@ -1,4 +1,4 @@
-package org.springframework.web
+package example
 
 import java.io.File
 
@@ -6,12 +6,15 @@ import org.apache.catalina.Context
 import org.apache.catalina.startup.Tomcat
 import org.springframework.web.servlet.DispatcherServlet
 
+/**
+  * Created by sam on 12/03/17.
+  */
 object App {
 
   private var tomcat: Tomcat = null
   private var ctx: Context = null
 
-  
+
   def main(args : Array[String]) {
 
     tomcat = new Tomcat()

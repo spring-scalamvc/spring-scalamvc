@@ -37,7 +37,7 @@ class HandlerTest extends FlatSpec with Matchers  with BeforeAndAfterAll{
     requestToPerson
   }
 
-  val newPersonAction = Action(Post(personUri)){
+  val newPersonAction = Action(Post[Person](personUri)){
     printPerson
   }
 

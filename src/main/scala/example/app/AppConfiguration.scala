@@ -1,4 +1,4 @@
-package org.springframework.web.app
+package example.app
 
 import org.springframework.context.annotation.{Bean, Configuration}
 import org.springframework.web.scala.{Action, Get, MvcRequest}
