@@ -2,8 +2,11 @@ package org.springframework.web.scala
 
 import javax.servlet.http.HttpServletRequest
 
+import com.fasterxml.jackson.core
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
+import com.fasterxml.jackson.core.`type`.TypeReference
+import com.fasterxml.jackson.module.scala.experimental.ScalaObjectMapper
 
 
 
@@ -69,11 +72,11 @@ class Post[A](queryPath:String,fn: HttpServletRequest => A) extends RequestMappi
 
 object Post {
 
-  val mapper = new  ObjectMapper()
+  val mapper = new  ObjectMapper() with ScalaObjectMapper
   mapper.registerModule(DefaultScalaModule)
 
-/*  def apply[A](path:String):Post[A] = new Post[A](path, r => mapper.readValue(r.getReader, classOf[A]))
-  def apply[A](path:String,customMapper:ObjectMapper):Post[A] = new Post[A](path, r => customMapper.readValue(r.getReader, classOf[A]))*/
+  def apply[A](path:String):Post[A] = new Post[A](path, r => mapper.readValue[A](r.getReader))
+//  def apply[A](path:String,customMapper:ObjectMapper):Post[A] = new Post[A](path, r => customMapper.readValue[A](""))
   def apply[A](path:String,fn: HttpServletRequest => A):Post[A] = new Post[A](path,fn)
 }
 
