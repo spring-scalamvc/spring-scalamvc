@@ -10,5 +10,5 @@
        default-lazy-init="true">
 
     <context:annotation-config  />
-    <context:component-scan  annotation-config="true" base-package="org.springframework.web.scala" />
+    <context:component-scan  annotation-config="true" base-package="org.springframework.web.scala, example.app" />
 </beans>
