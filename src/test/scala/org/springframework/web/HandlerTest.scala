@@ -20,6 +20,7 @@ class HandlerTest extends FlatSpec with Matchers  with BeforeAndAfterAll{
 
   val requestToString: MvcRequest => String = r => r.params.getOrElse("name","world")
   val requestToPerson: MvcRequest => String = r => r.attributes.getOrElse("company","ACME")
+  val stringToPerson: String => Person = s => new Person(s)
   val printPerson: Person => Person = p => {
     println(p.name)
     new Person(p.name.capitalize)
@@ -29,12 +30,14 @@ class HandlerTest extends FlatSpec with Matchers  with BeforeAndAfterAll{
 
   val helloUri: String = "/hello"
   val personUri: String = "/person/{company}/{id}"
+  val personParamUrl: String = "/person/twitter/1"
+
   val helloAction =  Action(Get( helloUri) ){
       requestToString
   }
 
-  val personAction =  Action(Get( personUri) ){
-    requestToPerson
+  val personAction =  Action[MvcRequest,Person](Get( personUri) ){
+    requestToPerson andThen stringToPerson andThen  printPerson
   }
 
   val newPersonAction = Action(Post[Person](personUri)){
@@ -63,11 +66,25 @@ class HandlerTest extends FlatSpec with Matchers  with BeforeAndAfterAll{
   }
 
   it should "match  handlers mapped on path parameters" in {
-    val mockRequest = new MockHttpServletRequest("GET","/person/twitter/1")
+
+    val mockRequest = new MockHttpServletRequest("GET",personParamUrl)
 
     val handrer = mapping.getHandlerInternal(mockRequest)
 
     mockRequest.getAttribute("company") should be ("twitter")
+
+
+
+  }
+
+  it should "decode request content" in {
+    val mockRequest = new MockHttpServletRequest("POST",personParamUrl)
+    mockRequest.setContent("{}".toCharArray.map(_.toByte))
+
+    val handrer = mapping.getHandlerInternal(mockRequest)
+
+
+
 
   }
 
