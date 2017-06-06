@@ -2,6 +2,9 @@ package org.springframework.web.scala
 
 import javax.servlet.http.{HttpServletRequest, HttpServletResponse}
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.scala.DefaultScalaModule
+import com.fasterxml.jackson.module.scala.experimental.ScalaObjectMapper
 import org.springframework.context.{ApplicationContext, ApplicationContextAware}
 import org.springframework.context.annotation._
 import org.springframework.web.servlet.{HandlerAdapter, View, ViewResolver}
@@ -29,7 +32,10 @@ class MvcConfiguration  extends ApplicationContextAware{
   def  jsonTemplate():View = {
     val view:MappingJackson2JsonView = new MappingJackson2JsonView()
     view.setPrettyPrint(true)
-   // view.setExtractValueFromSingleKeyModel(true);
+    view.setExtractValueFromSingleKeyModel(true)
+    val mapper = new  ObjectMapper() with ScalaObjectMapper
+    mapper.registerModule(DefaultScalaModule)
+    view.setObjectMapper(mapper)
     return view
   }
 
@@ -42,7 +48,6 @@ class MvcConfiguration  extends ApplicationContextAware{
   @Bean
   def handlerMapping():ActionHandlerMapping = {
 
-    println("handler! ")
 
     new ActionHandlerMapping(appContext.getBeansOfType(classOf[Action[String,String]]).values.asScala.map(action => {
       (action.req.path,action)

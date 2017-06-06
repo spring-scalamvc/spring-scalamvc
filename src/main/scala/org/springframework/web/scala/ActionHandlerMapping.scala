@@ -9,13 +9,13 @@ import scala.collection.JavaConversions.mapAsScalaMap
 /**
   * Created by sam on 09/03/17.
   */
-class ActionHandlerMapping(handlers:Map[String,Action[_,_]]) extends AbstractUrlHandlerMapping{
+class ActionHandlerMapping(handlers:Map[String,Action[_,_]]) extends AbstractUrlHandlerMapping with Logger {
 
 
 
   override def getHandlerInternal(request: HttpServletRequest): AnyRef = {
     val lookupPath = this.getUrlPathHelper.getLookupPathForRequest(request)
-    println("lookupPath: " + lookupPath)
+    logInfo("lookupPath: " + lookupPath)
 
     handlers.get(lookupPath)  match {
       case None =>  lookupParametricPatters(lookupPath,request) match {
