@@ -28,10 +28,7 @@ class AppConfiguration {
 
   @Bean
   def echo() = {
-
-
-
-    val display : Person => Person = p => {
+      val display : Person => Person = p => {
       val mapper = new  ObjectMapper() with ScalaObjectMapper
       mapper.registerModule(DefaultScalaModule)
       println(mapper.writeValueAsString(p))
