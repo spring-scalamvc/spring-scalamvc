@@ -3,7 +3,9 @@ package org.springframework.web.scala
 import javax.servlet.http.HttpServletRequest
 
 import org.springframework.web.servlet.handler.AbstractUrlHandlerMapping
+import org.springframework.web.servlet.resource.ResourceHttpRequestHandler
 import org.springframework.web.servlet.{HandlerExecutionChain, HandlerMapping}
+
 import scala.collection.JavaConversions.mapAsScalaMap
 
 /**
@@ -14,12 +16,13 @@ class ActionHandlerMapping(handlers:Map[String,Action[_,_]]) extends AbstractUrl
 
 
   override def getHandlerInternal(request: HttpServletRequest): AnyRef = {
+    this.setDefaultHandler("")
     val lookupPath = this.getUrlPathHelper.getLookupPathForRequest(request)
     logInfo("lookupPath: " + lookupPath)
 
     handlers.get(lookupPath)  match {
       case None =>  lookupParametricPatters(lookupPath,request) match {
-        case None => throw new RuntimeException( lookupPath + " not found in mapping ") // todo 404
+        case None => super.getHandlerInternal(request) //throw new RuntimeException( lookupPath + " not found in mapping ") // todo 404
         case Some(value) =>   {
           val vars:Map[String,String] = this.getPathMatcher().extractUriTemplateVariables(value.toString, lookupPath).toMap
           //println(vars)

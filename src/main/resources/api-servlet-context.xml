@@ -10,5 +10,7 @@
        default-lazy-init="true">
 
     <context:annotation-config  />
-    <context:component-scan  annotation-config="true" base-package="org.springframework.web.scala, example.app" />
+    <context:component-scan  annotation-config="true" base-package="org.springframework.web.scala,io.swagger example.app" />
+    <mvc:resources mapping="swagger-ui.html" location="classpath:/META-INF/resources/"/>
+    <mvc:resources mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/"/>
 </beans>

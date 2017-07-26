@@ -3,7 +3,7 @@ package example.app
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
 import com.fasterxml.jackson.module.scala.experimental.ScalaObjectMapper
-import io.swagger.SwaggerAnnotationProcessor
+import io.swagger.SwaggerActionProcessor
 import io.swagger.models.Swagger
 import org.springframework.beans.factory.config.BeanPostProcessor
 import org.springframework.context.annotation.{Bean, Configuration}
@@ -15,6 +15,8 @@ case class Person(name:String)
 
 @Configuration
 class AppConfiguration {
+
+
 
 
   @Bean
@@ -48,23 +50,5 @@ class AppConfiguration {
 
 
 
-  @Bean
-  def apiDocs() = {
 
-    val fun: MvcRequest => Swagger = r => swaggerAnnotationProcessor().swagger
-
-
-    Action(Get("/v2/api-docs")) {
-
-       fun
-    }
-
-  }
-
-
-  @Bean
-  def swaggerAnnotationProcessor():SwaggerAnnotationProcessor = {
-
-    new SwaggerAnnotationProcessor
-  }
 }

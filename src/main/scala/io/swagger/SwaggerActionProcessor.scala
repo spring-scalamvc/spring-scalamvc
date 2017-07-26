@@ -2,18 +2,22 @@ package io.swagger
 
 import example.app.Person
 import io.swagger.models.parameters.Parameter
-import io.swagger.models.{Operation, Path, Response, Swagger}
+import io.swagger.models._
 import org.springframework.beans.factory.config.BeanPostProcessor
 import org.springframework.web.scala.Action
 
 /**
   * Created by sam on 20/06/17.
   */
-class SwaggerAnnotationProcessor extends BeanPostProcessor {
+class SwaggerActionProcessor extends BeanPostProcessor {
 
-  val swagger:Swagger = new Swagger
+  private val empty = ""
+  val swagger:Swagger = new Swagger().info(new Info().title("title X").description("description Y")
+    .version("1.0.0").termsOfService(empty).contact(new Contact().email(empty).name(empty).url(empty))
+    .license(new License().name(empty).url(empty)))
 
   override def postProcessAfterInitialization(o: java.lang.Object, s: String): java.lang.Object = {
+
 
 
 

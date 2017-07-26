@@ -83,7 +83,7 @@ object Post {
 case class Action[A,B](val req:RequestMapping[A])( val fn:A => B) {
 
     def sampleInput()(implicit whatever: Manifest[A]) = {
-      whatever.runtimeClass.getDeclaredFields.map( f => {
+      whatever.runtimeClass.getFields.map( f => {
         println  (f.getName + " " + f.getType.getName)
         (f.getName, f.getType.getName)
       }

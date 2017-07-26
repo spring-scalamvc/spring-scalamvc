@@ -33,7 +33,7 @@ class MvcConfiguration  extends ApplicationContextAware{
     val view:MappingJackson2JsonView = new MappingJackson2JsonView()
     view.setPrettyPrint(true)
     view.setExtractValueFromSingleKeyModel(true)
-    val mapper = new  ObjectMapper() with ScalaObjectMapper
+    val mapper = new  JsonObjectMapper() with ScalaObjectMapper
     mapper.registerModule(DefaultScalaModule)
     view.setObjectMapper(mapper)
     return view
