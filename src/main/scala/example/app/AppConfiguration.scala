@@ -3,12 +3,10 @@ package example.app
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
 import com.fasterxml.jackson.module.scala.experimental.ScalaObjectMapper
-import io.swagger.SwaggerActionProcessor
 import io.swagger.models.Swagger
 import org.springframework.beans.factory.config.BeanPostProcessor
 import org.springframework.context.annotation.{Bean, Configuration}
 import org.springframework.web.scala.{Action, Get, MvcRequest, Post}
-
 
 case class Person(name:String)
 

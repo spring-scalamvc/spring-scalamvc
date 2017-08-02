@@ -2,7 +2,11 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.github.sammyrulez</groupId>
   <artifactId>spring-scalamvc</artifactId>
+  <packaging>pom</packaging>
   <version>0.2.0</version>
+  <modules>
+    <module>../springscalamvcswagger</module>
+  </modules>
   <name>Spring Scala mvc</name>
   <description>Scala support for Spring MVC</description>
   <build>
