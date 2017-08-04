@@ -2,6 +2,7 @@ package org.springframework.web.scala
 
 import javax.servlet.http.{HttpServletRequest, HttpServletResponse}
 
+import org.springframework.web.servlet.resource.ResourceHttpRequestHandler
 import org.springframework.web.servlet.{HandlerAdapter, ModelAndView}
 
 
@@ -16,19 +17,32 @@ class FunctorHandlerActionAdapter  extends HandlerAdapter{
 
   override def handle(httpServletRequest: HttpServletRequest, httpServletResponse: HttpServletResponse, o: scala.Any): ModelAndView = {
 
-    val action:Action[AnyRef,AnyRef] = o.asInstanceOf[Action[AnyRef,AnyRef]]
+    o match {
 
-    val input = action.req.defaultConverter()(httpServletRequest)
+      case action:Action[_,_] => {
+        val input = action.req.defaultConverter()(httpServletRequest)
 
-    val eval = functor.map(input,action.fn)
+        val eval = functor.map(input,action.fn)
 
-    val outModel = new ModelAndView("jsonTemplate")
+        val outModel = new ModelAndView("jsonTemplate")
 
-    outModel.addObject("content",eval.read())
+        outModel.addObject("content",eval.read())
 
-    //TODO manage response
+        //TODO manage response
 
-    return outModel
+        return outModel
+      }
+      case _ =>  {
+        println("got a " + o.getClass.getCanonicalName)
+        new ModelAndView("broken")
+      }
+
+
+    }
+
+  //  val action:Action[AnyRef,AnyRef] = o.asInstanceOf[Action[AnyRef,AnyRef]]
+
+
 
 
   }

@@ -80,7 +80,18 @@ object Post {
 }
 
 
-case class Action[A,B](val req:RequestMapping[A])( val fn:A => B) //TODO  swagger
+case class Action[A,B](val req:RequestMapping[A])( val fn:A => B) {
+
+    def sampleInput()(implicit whatever: Manifest[A]) = {
+      whatever.runtimeClass.getFields.map( f => {
+        println  (f.getName + " " + f.getType.getName)
+        (f.getName, f.getType.getName)
+      }
+      ).toList.toMap
+
+    }
+
+}
 
 object Action {
 
